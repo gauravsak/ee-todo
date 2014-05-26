@@ -1,0 +1,57 @@
+apply plugin : 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
+
+eclipse {
+    classpath {
+    	downloadSources = true
+		downloadJavadoc = true
+    }
+}
+
+sourceCompatibility = 1.8
+
+test.scanForTestClasses = false
+
+/*configurations {
+    compile {
+        description = 'compile classpath'
+        transitive = true
+    }
+    runtime {
+        extendsFrom compile
+    }
+}*/
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.8'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.8'
+    compile group: 'redis.clients', name: 'jedis', version: '2.4.2'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.2.7'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    
+    testCompile group: 'junit', name: 'junit'
+    testCompile group: 'org.glassfish.jersey.test-framework', name: 'jersey-test-framework-core', version: '2.8'
+    testCompile group: 'org.glassfish.jersey.test-framework.providers', name: 'jersey-test-framework-provider-grizzly2', version: '2.8'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
+    testCompile group: 'com.lordofthejars', name: 'nosqlunit-redis', version: '0.7.9'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: '1.5.4'
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.5.4'
+    
+    /*runtime 'org.springframework:spring-core:2.5', 'org.springframework:spring-aop:2.5'
+    runtime(
+        [group: 'org.springframework', name: 'spring-core', version: '2.5'],
+        [group: 'org.springframework', name: 'spring-aop', version: '2.5']
+    )
+    runtime('org.hibernate:hibernate:3.0.5') {
+        transitive = true
+    }
+    runtime group: 'org.hibernate', name: 'hibernate', version: '3.0.5', transitive: true
+    runtime(group: 'org.hibernate', name: 'hibernate', version: '3.0.5') {
+        transitive = true
+    }*/
+}
