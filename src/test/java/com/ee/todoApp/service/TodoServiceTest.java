@@ -4,8 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -15,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import com.ee.todoApp.db.RedisDbUtil;
+import com.ee.todoApp.exception.InvalidTodoException;
 import com.ee.todoApp.model.Todo;
 
 @RunWith(PowerMockRunner.class)
@@ -22,6 +26,9 @@ import com.ee.todoApp.model.Todo;
 public class TodoServiceTest {
 
 	private TodoService todoService;
+	
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
 	
 	@Before
 	public void setUp() {
@@ -85,5 +92,10 @@ public class TodoServiceTest {
 		todoService.deleteTodo(1);
 
 		assertNull(todoService.getTodo(1));
+	}
+	
+	@Test
+	public void throwsInvalidTodoExceptionifTodoNoteEmpty() {
+		
 	}
 }

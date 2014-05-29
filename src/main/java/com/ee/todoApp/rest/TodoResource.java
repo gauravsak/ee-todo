@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.ee.todoApp.exception.InvalidTodoException;
 import com.ee.todoApp.model.Todo;
 import com.ee.todoApp.service.TodoService;
 
@@ -26,7 +27,12 @@ public class TodoResource {
 	@Path("/todo")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createTodo(Todo todo) {
+	public Response createTodo(Todo todo) throws InvalidTodoException {
+		
+		if(todo.getNote() == null) {
+			throw new InvalidTodoException("Invalid Todo description.");
+		}
+		
 		TodoService todoService = new TodoService();
 		todoService.createTodo(todo);
 		return Response.created(

@@ -14,6 +14,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
+import com.ee.todoApp.exception.InvalidTodoException;
 import com.ee.todoApp.model.Todo;
 import com.ee.todoApp.service.TodoService;
 import com.ee.todoApp.webapp.MyTodoApp;
@@ -158,6 +159,33 @@ public class TodoResourceTest extends JerseyTest {
 		assertEquals(Status.NO_CONTENT, Status.fromStatusCode(response.getStatus()));
 
 		assertNull(todoService.getTodo(expectedTodo.getId()));
+	}
+	
+	@Test
+	public void badRequestTryingToCreateTodoWithDescriptionNull() {
+		// Expected data
+		String expectedExceptionType = InvalidTodoException.class.getName();
+		String expectedErrorMessage = "Invalid Todo description.";
+
+		// Initialization
+
+		// RESTful API call
+		final Response response = target("rest/todo").request(
+				MediaType.APPLICATION_JSON).post(
+				Entity.entity(new Gson().toJson(new Todo(1, null)),
+						MediaType.APPLICATION_JSON), Response.class);
+
+		// Assertions
+		assertEquals(Status.BAD_REQUEST, Status.fromStatusCode(response.getStatus()));
+
+		Gson gson = new Gson();
+		JsonObject exceptionJson = gson.fromJson(
+				response.readEntity(String.class), JsonObject.class);
+		String actualExceptionType = exceptionJson.get("exceptionType").getAsString();
+		assertEquals(expectedExceptionType, actualExceptionType);
+		
+		String actualErrorMessage = exceptionJson.get("message").getAsString();
+		assertEquals(expectedErrorMessage, actualErrorMessage);
 	}
 
 	@Override

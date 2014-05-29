@@ -8,6 +8,7 @@ import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 
+import com.ee.todoApp.exception.mapper.InvalidTodoMapper;
 import com.ee.todoApp.rest.TodoResource;
 
 
@@ -17,9 +18,16 @@ public class MyTodoApp extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> classes = new HashSet<Class<?>>();
-		// register root resource
+		
+		// Resources
 		classes.add(TodoResource.class);
+		
+		//Providers
+		classes.add(InvalidTodoMapper.class);
+		
+		//Features
 		classes.add(JacksonFeature.class);
+		
 		return classes;
 	}
 }
